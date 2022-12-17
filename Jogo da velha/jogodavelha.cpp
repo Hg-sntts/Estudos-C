@@ -2,31 +2,26 @@
 using namespace std;
 // Arrays bidimensionais / Matrizes
 
+char simb;
+char array[3][3];
+int l, c, lin, col, casas = 0, player = 1;
+bool velha = false, venceu = false;
+
+void imprimirCasas();
+bool checarWin();
+void mensagemVitoria();
+bool deuVelha();
+void preencherCasas();
+
 int main(){
 
-    char simb;
-    char array[3][3];
-    int l, c, lin, col, casas, player;
-    casas = 0;
-    player = 1;
+    preencherCasas();
 
-    for(l=0;l<3;l++){
-        for(c=0;c<3;c++){
-            array[l][c] = '.';
-        }
-    }
-
-    while (true){
+    while (velha == false || venceu == false){
 
         cout << "Turno: Player " << player << "\n\n";
         
-        //Imprime o jogo da velha na tela
-        for(l=0;l<3;l++){
-            for(c=0;c<3;c++){
-                cout << "|" << array[l][c] << "|";
-            }
-            cout << "\n";
-        }
+        imprimirCasas(); //Imprime o jogo da velha na tela
 
         //Escolha do jogador
         cout << "Linha: ";
@@ -39,28 +34,11 @@ int main(){
         array[lin-1][col-1] = simb;
 
         system("cls");
-
-        //Checa se alguem venceu
-        if((array[0][0] == 'x' && array[0][1] == 'x' && array[0][2] == 'x') || (array[0][0] == 'o' && array[0][1] == 'o' && array[0][2] == 'o')){goto win;};
-        if((array[1][0] == 'x' && array[1][1] == 'x' && array[1][2] == 'x') || (array[1][0] == 'o' && array[1][1] == 'o' && array[1][2] == 'o')){goto win;};
-        if((array[2][0] == 'x' && array[2][1] == 'x' && array[2][2] == 'x') || (array[2][0] == 'o' && array[2][1] == 'o' && array[2][2] == 'o')){goto win;};
-        if((array[0][0] == 'x' && array[1][0] == 'x' && array[2][0] == 'x') || (array[0][0] == 'o' && array[1][0] == 'o' && array[2][0] == 'o')){goto win;};
-        if((array[0][1] == 'x' && array[1][1] == 'x' && array[2][1] == 'x') || (array[0][1] == 'o' && array[1][1] == 'o' && array[2][1] == 'o')){goto win;};
-        if((array[0][2] == 'x' && array[1][2] == 'x' && array[2][2] == 'x') || (array[0][2] == 'o' && array[1][2] == 'o' && array[2][2] == 'o')){goto win;};
-        if((array[0][0] == 'x' && array[1][1] == 'x' && array[2][2] == 'x') || (array[0][0] == 'o' && array[1][1] == 'o' && array[2][2] == 'o')){goto win;};
-        if((array[0][2] == 'x' && array[1][1] == 'x' && array[2][0] == 'x') || (array[0][2] == 'o' && array[1][1] == 'o' && array[2][0] == 'o')){goto win;};
-
-        //Checa se deu velha
-        for(l=0;l<3;l++){
-            for(c=0;c<3;c++){
-                        if(array[l][c] != '.'){
-                    casas++;
-                            if(casas == 9){
-                        goto fim;
-                    }
-                }
-            }  
-        }
+        
+        if(checarWin() == true){break;} //Checa se alguem venceu, se sim, interrompe o programa
+        
+        if(deuVelha() == true) {break;} //Checa se deu velha, se sim, interrompe o programa
+         
 
         //Alterna o player
         (player == 1) ? player = 2 : player = 1;
@@ -68,19 +46,66 @@ int main(){
         //Contador para ver se todas as casas foram preenchidas, zera no fim de cada loop
         casas = 0;
         }
+    
+    system("pause");
 
-    fim: cout << "\nDeu velha\n\n";
-    win: cout << "\nParabens Player " << player << "! voce venceu!\n\n";
+    return 0;
+}
 
+void preencherCasas()
+{
+    for(l=0;l<3;l++){
+        for(c=0;c<3;c++){
+            array[l][c] = ' ';
+        }
+    }
+}
+
+void imprimirCasas()
+{
     for(l=0;l<3;l++){
             for(c=0;c<3;c++){
                 cout << "|" << array[l][c] << "|";
             }
             cout << "\n";
         }
-    
-    
-    system("pause");
+}
 
-    return 0;
+bool checarWin()
+{
+    for(l=0;l<3;l++){
+        for(c=0;c<3;c++){
+            if((array[l][0] == 'x' && array[l][1] == 'x' && array[l][2] == 'x') || (array[l][0] == 'o' && array[l][1] == 'o' && array[l][2] == 'o'))
+            {
+                mensagemVitoria();
+                imprimirCasas();
+                return true;
+            }
+        }
+    }
+
+    if((array[0][0] == 'x' && array[1][1] == 'x' && array[2][2] == 'x') || (array[0][0] == 'o' && array[1][1] == 'o' && array[2][2] == 'o')){mensagemVitoria();}
+    if((array[0][2] == 'x' && array[1][1] == 'x' && array[2][0] == 'x') || (array[0][2] == 'o' && array[1][1] == 'o' && array[2][0] == 'o')){mensagemVitoria();}
+    
+}
+
+void mensagemVitoria()
+{
+    cout << "\nParabens Player " << player << "! voce venceu!\n\n";
+}
+
+bool deuVelha()
+{
+    for(l=0;l<3;l++){
+        for(c=0;c<3;c++){
+            if((array[l][c] == 'x') || (array[l][c] == 'o')){
+                casas++;
+                if(casas == 9){
+                    cout << "Deu velha! ";
+                    imprimirCasas();
+                    return true;
+                }
+            }
+        }  
+    }
 }
