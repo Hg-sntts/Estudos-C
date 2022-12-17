@@ -5,7 +5,6 @@ using namespace std;
 char simb;
 char array[3][3];
 int l, c, lin, col, casas = 0, player = 1;
-bool velha = false, venceu = false;
 
 void imprimirCasas();
 bool checarWin();
@@ -17,7 +16,7 @@ int main(){
 
     preencherCasas();
 
-    while (velha == false || venceu == false){
+    while (true){
 
         cout << "Turno: Player " << player << "\n\n";
         
