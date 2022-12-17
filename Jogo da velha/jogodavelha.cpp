@@ -100,7 +100,7 @@ bool deuVelha()
             if((array[l][c] == 'x') || (array[l][c] == 'o')){
                 casas++;
                 if(casas == 9){
-                    cout << "Deu velha! ";
+                    cout << "Deu velha! " << endl;
                     imprimirCasas();
                     return true;
                 }
